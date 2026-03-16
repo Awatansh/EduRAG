@@ -1,4 +1,4 @@
-# KB Agent
+# EDU RAG A Multimodal Retrieval Augmented Learning System with Dynamic Knowledge Base Management
 
 A local-first, full-stack Knowledge Base Agent. Upload documents (PDFs, images, videos, audio), process them into searchable vector embeddings, and interact with them via AI-powered Q&A chat and automatic Quiz generation.
 
