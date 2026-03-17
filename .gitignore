@@ -12,6 +12,7 @@ build/
 .eggs/
 venv/
 .venv/
+backend/backend/
 
 # Storage
 backend/storage/users/
