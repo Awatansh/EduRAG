@@ -1,5 +1,5 @@
 """
-KB Agent — FastAPI Application Entry Point
+Edu Rag — FastAPI Application Entry Point
 """
 
 from contextlib import asynccontextmanager
@@ -25,12 +25,12 @@ async def lifespan(app: FastAPI):
     yield
 
     # Shutdown: cleanup if needed
-    print("👋 Shutting down KB Agent")
+    print("👋 Shutting down Edu Rag")
 
 
 app = FastAPI(
-    title="KB Agent API",
-    description="Knowledge Base Agent — Upload documents, ask questions, generate quizzes",
+    title="Edu Rag API",
+    description="Edu Rag — Upload documents, ask questions, generate quizzes",
     version="1.0.0",
     lifespan=lifespan,
 )
@@ -65,4 +65,4 @@ async def global_exception_handler(request: Request, exc: Exception):
 # ── Health check ─────────────────────────────────────────────
 @app.get("/api/health", tags=["health"])
 async def health_check():
-    return {"status": "ok", "service": "kb-agent"}
+    return {"status": "ok", "service": "edu-rag"}

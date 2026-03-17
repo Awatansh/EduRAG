@@ -80,7 +80,7 @@ export default function DashboardPage() {
     <div className="app-container">
       {/* Sidebar */}
       <aside className="sidebar">
-        <div className="sidebar-logo">KB Agent</div>
+        <div className="sidebar-logo">Edu Rag</div>
         <nav className="sidebar-nav">
           <button className="nav-link active" onClick={() => router.push('/dashboard')}>
             <span className="icon">📄</span> Documents

@@ -8,7 +8,6 @@ import traceback
 from uuid import UUID
 
 from sqlalchemy import select
-from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import async_session
 from app.models.document import Document
@@ -50,14 +49,14 @@ async def _process_document(document_id: str):
             file_type = document.file_type
 
             if file_type == "pdf":
-                text, page_count = extract_text_from_pdf(file_path)
+                text, page_count = await asyncio.to_thread(extract_text_from_pdf, file_path)
                 document.page_count = page_count
             elif file_type == "image":
-                text = extract_text_from_image(file_path)
+                text = await asyncio.to_thread(extract_text_from_image, file_path)
             elif file_type == "video":
-                text = extract_text_from_video(file_path)
+                text = await asyncio.to_thread(extract_text_from_video, file_path)
             elif file_type == "audio":
-                text = extract_text_from_audio(file_path)
+                text = await asyncio.to_thread(extract_text_from_audio, file_path)
             else:
                 raise ValueError(f"Unsupported file type: {file_type}")
 
@@ -68,7 +67,7 @@ async def _process_document(document_id: str):
                 return
 
             # 3. Chunk the text
-            chunks_data = chunk_text(text)
+            chunks_data = await asyncio.to_thread(chunk_text, text)
 
             if not chunks_data:
                 document.status = "completed"
@@ -94,7 +93,7 @@ async def _process_document(document_id: str):
                 }
                 for c, cid in zip(chunks_data, chunk_ids)
             ]
-            vector_ids = upsert_vectors(embeddings, payloads)
+            vector_ids = await asyncio.to_thread(upsert_vectors, embeddings, payloads)
 
             # 6. Save chunks to PostgreSQL
             for chunk_data, vector_id, cid in zip(chunks_data, vector_ids, chunk_ids):

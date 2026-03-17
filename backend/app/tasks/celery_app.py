@@ -4,7 +4,7 @@ from celery import Celery
 from app.config import settings
 
 celery_app = Celery(
-    "kb_agent",
+    "edu_rag",
     broker=settings.REDIS_URL,
     backend=settings.REDIS_URL,
 )

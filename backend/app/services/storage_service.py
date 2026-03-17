@@ -39,4 +39,12 @@ def delete_document_storage(user_id: UUID, document_id: UUID) -> None:
     """Delete all stored files for a document."""
     doc_dir = get_document_storage_dir(user_id, document_id)
     if doc_dir.exists():
-        shutil.rmtree(doc_dir)
+        try:
+            shutil.rmtree(doc_dir)
+        except OSError as e:
+            # On Windows a file may still be held open by a processing worker.
+            raise OSError(
+                f"Could not delete document files — a background process may still "
+                f"have the file open. Wait for processing to finish and try again. "
+                f"({e})"
+            ) from e

@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import { isAuthenticated, askQuestion, getChatHistory, logout } from '@/lib/api';
+import { isAuthenticated, askQuestion, getChatHistory, clearChatHistory, logout } from '@/lib/api';
 
 export default function ChatPage() {
   const router = useRouter();
@@ -31,6 +31,16 @@ export default function ChatPage() {
       // Ignore history load failure
     } finally {
       setInitialLoading(false);
+    }
+  }
+
+  async function handleClearHistory() {
+    if (!confirm('Clear all chat messages? This cannot be undone.')) return;
+    try {
+      await clearChatHistory();
+      setMessages([]);
+    } catch {
+      // Ignore clear failure silently
     }
   }
 
@@ -71,7 +81,7 @@ export default function ChatPage() {
   return (
     <div className="app-container">
       <aside className="sidebar">
-        <div className="sidebar-logo">KB Agent</div>
+        <div className="sidebar-logo">Edu Rag</div>
         <nav className="sidebar-nav">
           <button className="nav-link" onClick={() => router.push('/dashboard')}>
             <span className="icon">📄</span> Documents
@@ -90,10 +100,17 @@ export default function ChatPage() {
 
       <main className="main-content">
         <div className="chat-container">
-          <h1 className="page-title" style={{ marginBottom: 8 }}>Chat with your Knowledge Base</h1>
-          <p className="page-subtitle" style={{ marginBottom: 20 }}>
-            Ask questions about your uploaded documents
-          </p>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+              <h1 className="page-title" style={{ margin: 0 }}>Chat with your Knowledge Base</h1>
+              {messages.length > 0 && (
+                <button className="btn btn-danger btn-sm" onClick={handleClearHistory}>
+                  🗑 Clear Chat
+                </button>
+              )}
+            </div>
+            <p className="page-subtitle" style={{ marginBottom: 20 }}>
+              Ask questions about your uploaded documents
+            </p>
 
           <div className="chat-messages">
             {initialLoading ? (

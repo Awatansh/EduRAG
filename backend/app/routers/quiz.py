@@ -102,3 +102,20 @@ async def submit_quiz(
     await db.flush()
     await db.refresh(quiz)
     return quiz
+
+
+@router.delete("/{quiz_id}", status_code=204)
+async def delete_quiz(
+    quiz_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Delete a quiz."""
+    result = await db.execute(
+        select(Quiz).where(Quiz.id == quiz_id, Quiz.user_id == current_user.id)
+    )
+    quiz = result.scalar_one_or_none()
+    if not quiz:
+        raise HTTPException(status_code=404, detail="Quiz not found")
+    await db.delete(quiz)
+    await db.commit()

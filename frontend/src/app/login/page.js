@@ -28,7 +28,7 @@ export default function LoginPage() {
     <div className="auth-container">
       <div className="auth-card">
         <h1 className="auth-title">Welcome back</h1>
-        <p className="auth-subtitle">Sign in to your KB Agent account</p>
+        <p className="auth-subtitle">Sign in to your Edu Rag account</p>
 
         {error && <div className="alert alert-error">{error}</div>}
 

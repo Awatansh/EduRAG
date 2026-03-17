@@ -1,5 +1,5 @@
 """
-KB Agent — FastAPI Configuration
+Edu Rag — FastAPI Configuration
 Centralized settings via pydantic-settings, loaded from .env
 """
 
@@ -15,15 +15,15 @@ class Settings(BaseSettings):
     )
 
     # ── PostgreSQL ──────────────────────────────────────────────
-    POSTGRES_USER: str = "kbagent"
-    POSTGRES_PASSWORD: str = "kbagent_dev"
-    POSTGRES_DB: str = "kbagent"
-    DATABASE_URL: str = "postgresql+asyncpg://kbagent:kbagent_dev@localhost:5432/kbagent"
+    POSTGRES_USER: str = "edurag"
+    POSTGRES_PASSWORD: str = "edurag_dev"
+    POSTGRES_DB: str = "edurag"
+    DATABASE_URL: str = "postgresql+asyncpg://edurag:edurag_dev@localhost:5433/edurag"
 
     # ── Qdrant ──────────────────────────────────────────────────
     QDRANT_HOST: str = "localhost"
     QDRANT_PORT: int = 6333
-    QDRANT_COLLECTION: str = "kb_agent_chunks"
+    QDRANT_COLLECTION: str = "edu_rag_chunks"
 
     # ── Redis ───────────────────────────────────────────────────
     REDIS_URL: str = "redis://localhost:6379/0"

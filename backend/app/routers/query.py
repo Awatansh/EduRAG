@@ -1,7 +1,7 @@
 """Query router — RAG-based Q&A and chat history."""
 
 from fastapi import APIRouter, Depends
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
@@ -66,3 +66,15 @@ async def get_chat_history(
     )
     messages = result.scalars().all()
     return list(reversed(messages))  # return in chronological order
+
+
+@router.delete("/history", status_code=204)
+async def clear_chat_history(
+    db: AsyncSession = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """Delete all chat messages for the current user."""
+    await db.execute(
+        delete(ChatMessage).where(ChatMessage.user_id == current_user.id)
+    )
+    await db.commit()

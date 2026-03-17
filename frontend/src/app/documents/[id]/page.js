@@ -53,7 +53,7 @@ export default function DocumentDetailPage() {
   if (loading) return (
     <div className="app-container">
       <aside className="sidebar">
-        <div className="sidebar-logo">KB Agent</div>
+        <div className="sidebar-logo">Edu Rag</div>
       </aside>
       <main className="main-content">
         <div className="empty-state"><div className="spinner" style={{ margin: '0 auto' }} /></div>
@@ -64,7 +64,7 @@ export default function DocumentDetailPage() {
   if (error) return (
     <div className="app-container">
       <aside className="sidebar">
-        <div className="sidebar-logo">KB Agent</div>
+        <div className="sidebar-logo">Edu Rag</div>
       </aside>
       <main className="main-content">
         <div className="alert alert-error">{error}</div>
@@ -75,7 +75,7 @@ export default function DocumentDetailPage() {
   return (
     <div className="app-container">
       <aside className="sidebar">
-        <div className="sidebar-logo">KB Agent</div>
+        <div className="sidebar-logo">Edu Rag</div>
         <nav className="sidebar-nav">
           <button className="nav-link" onClick={() => router.push('/dashboard')}>
             <span className="icon">📄</span> Documents

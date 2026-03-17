@@ -1,7 +1,7 @@
 import './globals.css';
 
 export const metadata = {
-  title: 'KB Agent — Knowledge Base Assistant',
+  title: 'Edu Rag — Knowledge Base Assistant',
   description: 'Upload documents, ask questions, and generate quizzes with AI-powered RAG.',
 };
 

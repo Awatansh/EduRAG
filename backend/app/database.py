@@ -1,5 +1,5 @@
 """
-KB Agent — Database engine & session factory (async SQLAlchemy)
+Edu Rag — Database engine & session factory (async SQLAlchemy)
 """
 
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import {
   isAuthenticated, listDocuments, generateQuiz, listQuizzes,
-  getQuiz, submitQuiz, logout
+  getQuiz, submitQuiz, deleteQuiz, logout
 } from '@/lib/api';
 
 export default function QuizPage() {
@@ -92,6 +92,17 @@ export default function QuizPage() {
     }
   }
 
+  async function handleDeleteQuiz(e, id) {
+    e.stopPropagation();
+    if (!confirm('Delete this quiz? This cannot be undone.')) return;
+    try {
+      await deleteQuiz(id);
+      setQuizzes(prev => prev.filter(q => q.id !== id));
+    } catch (err) {
+      setError(err.message);
+    }
+  }
+
   // ── Render Active Quiz ──────────────────────────────────
   if (activeQuiz) {
     const questions = Array.isArray(activeQuiz.questions) ? activeQuiz.questions : [];
@@ -99,7 +110,7 @@ export default function QuizPage() {
     return (
       <div className="app-container">
         <aside className="sidebar">
-          <div className="sidebar-logo">KB Agent</div>
+          <div className="sidebar-logo">Edu Rag</div>
           <nav className="sidebar-nav">
             <button className="nav-link" onClick={() => router.push('/dashboard')}>
               <span className="icon">📄</span> Documents
@@ -176,7 +187,7 @@ export default function QuizPage() {
   return (
     <div className="app-container">
       <aside className="sidebar">
-        <div className="sidebar-logo">KB Agent</div>
+        <div className="sidebar-logo">Edu Rag</div>
         <nav className="sidebar-nav">
           <button className="nav-link" onClick={() => router.push('/dashboard')}>
             <span className="icon">📄</span> Documents
@@ -273,7 +284,16 @@ export default function QuizPage() {
                       key={quiz.id}
                       className="card doc-card"
                       onClick={() => handleViewQuiz(quiz.id)}
+                      style={{ position: 'relative' }}
                     >
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={(e) => handleDeleteQuiz(e, quiz.id)}
+                        title="Delete quiz"
+                        style={{ position: 'absolute', top: 10, right: 10, padding: '2px 8px', fontSize: '0.75rem' }}
+                      >
+                        🗑
+                      </button>
                       <div className="doc-filename">{quiz.title || 'Quiz'}</div>
                       <div className="doc-meta">
                         <span>{quiz.quiz_type.toUpperCase()}</span>

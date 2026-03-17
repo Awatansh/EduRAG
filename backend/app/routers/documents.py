@@ -73,7 +73,7 @@ async def upload_document(
     await db.flush()
     await db.refresh(document)
 
-    # Queue processing as async background task
+    # Queue processing after response is sent.
     background_tasks.add_task(_process_document, str(doc_id))
 
     return document
@@ -154,6 +154,12 @@ async def delete_document(
     if not document:
         raise HTTPException(status_code=404, detail="Document not found")
 
+    if document.status == "processing":
+        raise HTTPException(
+            status_code=409,
+            detail="Document is currently being processed. Please wait until processing completes before deleting.",
+        )
+
     # Delete vectors from Qdrant
     try:
         delete_document_vectors(str(document_id))
@@ -165,3 +171,4 @@ async def delete_document(
 
     # Delete DB record (cascades to chunks)
     await db.delete(document)
+    await db.commit()

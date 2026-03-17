@@ -1,5 +1,5 @@
 /**
- * API client for KB Agent backend.
+ * API client for Edu Rag backend.
  */
 
 const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
@@ -9,7 +9,7 @@ const API_BASE = process.env.NEXT_PUBLIC_API_URL || '';
  */
 function getToken() {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('kb_agent_token');
+    return localStorage.getItem('edu_rag_token');
   }
   return null;
 }
@@ -19,7 +19,7 @@ function getToken() {
  */
 function setToken(token) {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('kb_agent_token', token);
+    localStorage.setItem('edu_rag_token', token);
   }
 }
 
@@ -28,7 +28,7 @@ function setToken(token) {
  */
 function clearToken() {
   if (typeof window !== 'undefined') {
-    localStorage.removeItem('kb_agent_token');
+    localStorage.removeItem('edu_rag_token');
   }
 }
 
@@ -173,4 +173,12 @@ export async function submitQuiz(id, answers) {
     method: 'POST',
     body: JSON.stringify({ answers }),
   });
+}
+
+export async function deleteQuiz(id) {
+  return apiFetch(`/api/quiz/${id}`, { method: 'DELETE' });
+}
+
+export async function clearChatHistory() {
+  return apiFetch('/api/query/history', { method: 'DELETE' });
 }
